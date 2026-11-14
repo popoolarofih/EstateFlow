@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "demo-estateflow",
+    "staging": "estateflow-staging",
+    "production": "estateflow-production"
+  }
+}

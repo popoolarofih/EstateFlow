@@ -1,0 +1,195 @@
+rules_version = '2';
+
+// EstateFlow Firestore Security Rules.
+//
+// These rules protect direct browser access only. All writes go through trusted server code
+// (Next.js route handlers and Cloud Functions using the Admin SDK), which bypasses these rules
+// and therefore authorises every operation itself. Browser reads are limited to what each
+// role needs for live views. Membership documents are the source of tenant access.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function memberPath(estateId) {
+      return /databases/$(database)/documents/estateMembers/$(request.auth.uid + '_' + estateId);
+    }
+
+    function memberOf(estateId) {
+      return signedIn()
+        && exists(memberPath(estateId))
+        && get(memberPath(estateId)).data.status == 'active';
+    }
+
+    function hasRole(estateId, roles) {
+      return memberOf(estateId) && get(memberPath(estateId)).data.role in roles;
+    }
+
+    function hasPermission(estateId, permission) {
+      return hasRole(estateId, ['exco']) && permission in get(memberPath(estateId)).data.permissions;
+    }
+
+    function unitOf(estateId) {
+      return get(memberPath(estateId)).data.unitId;
+    }
+
+    function ownUnit(estateId, unitId) {
+      return hasRole(estateId, ['resident']) && unitOf(estateId) == unitId;
+    }
+
+    // ---------------------------------------------------------------- identity
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+
+      match /pushTokens/{tokenId} {
+        allow read, write: if false;
+      }
+    }
+
+    match /estates/{estateId} {
+      allow read: if memberOf(estateId);
+      allow write: if false;
+    }
+
+    match /estateMembers/{memberId} {
+      // Users can read their own memberships; managers can read their estate's members.
+      allow read: if signedIn()
+        && (resource.data.uid == request.auth.uid || hasRole(resource.data.estateId, ['manager']));
+      // Membership writes are server only.
+      allow write: if false;
+    }
+
+    match /units/{unitId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+        || ownUnit(resource.data.estateId, unitId);
+      allow write: if false;
+    }
+
+    // Invitation tokens are hashed, but invites are still only readable by the server.
+    match /invites/{inviteId} {
+      allow read, write: if false;
+    }
+
+    // ------------------------------------------------------------- gate access
+
+    match /visitorPasses/{passId} {
+      // Guards verify through the server endpoint; they never list passes directly.
+      allow read: if memberOf(resource.data.estateId)
+        && (resource.data.createdByUid == request.auth.uid
+          || ownUnit(resource.data.estateId, resource.data.unitId)
+          || hasRole(resource.data.estateId, ['manager', 'exco']));
+      allow write: if false;
+    }
+
+    // Estate scoped code locks: server only, otherwise they would leak which codes are in use.
+    match /passCodes/{lockId} {
+      allow read, write: if false;
+    }
+
+    match /gateEvents/{eventId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+        || (hasRole(resource.data.estateId, ['guard'])
+          && resource.data.gateId in get(memberPath(resource.data.estateId)).data.gateIds);
+      // Append only and written by the server.
+      allow write: if false;
+    }
+
+    match /visitFlags/{flagId} {
+      allow read, write: if false;
+    }
+
+    // ----------------------------------------------------------------- finance
+
+    match /billingRules/{ruleId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco']);
+      allow write: if false;
+    }
+
+    match /invoices/{invoiceId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+        || (ownUnit(resource.data.estateId, resource.data.unitId) && resource.data.status != 'draft');
+      allow write: if false;
+    }
+
+    match /payments/{paymentId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+        || (memberOf(resource.data.estateId) && resource.data.payerUid == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /receipts/{receiptId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+        || ownUnit(resource.data.estateId, resource.data.unitId);
+      allow write: if false;
+    }
+
+    match /webhookEvents/{eventId} {
+      allow read, write: if false;
+    }
+
+    match /ledgerEntries/{entryId} {
+      allow read: if memberOf(resource.data.estateId)
+        && (hasRole(resource.data.estateId, ['manager', 'exco'])
+          || (resource.data.status == 'published' && hasRole(resource.data.estateId, ['resident'])));
+      // Published entries are immutable; every change goes through the server.
+      allow write: if false;
+    }
+
+    // ---------------------------------------------------------------- services
+
+    match /maintenanceTickets/{ticketId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+        || ownUnit(resource.data.estateId, resource.data.unitId);
+      allow write: if false;
+
+      match /events/{eventId} {
+        allow read: if hasRole(resource.data.estateId, ['manager', 'exco'])
+          || ownUnit(resource.data.estateId, get(/databases/$(database)/documents/maintenanceTickets/$(ticketId)).data.unitId);
+        allow write: if false;
+      }
+    }
+
+    match /emergencyAlerts/{alertId} {
+      // Guards and managers watch live alerts; the resident who raised one watches its status.
+      allow read: if hasRole(resource.data.estateId, ['guard', 'manager', 'exco'])
+        || (memberOf(resource.data.estateId) && resource.data.createdByUid == request.auth.uid);
+      allow write: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if memberOf(resource.data.estateId) && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    match /auditLogs/{logId} {
+      allow read: if hasRole(resource.data.estateId, ['manager', 'exco']);
+      allow write: if false;
+    }
+
+    // ------------------------------------------------------------ server only
+
+    match /estateSlugs/{slug} {
+      allow read, write: if false;
+    }
+
+    match /rateLimits/{limitId} {
+      allow read, write: if false;
+    }
+
+    match /imports/{importId} {
+      allow read, write: if false;
+    }
+
+    match /pilotRequests/{requestId} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

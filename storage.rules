@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// EstateFlow Cloud Storage rules. Files are private by default. Uploads go through the server,
+// which validates type, size and image dimensions before writing with the Admin SDK. Reads are
+// served by the authorised `/api/files` route; direct browser reads are additionally limited
+// to active members of the owning estate with a role that may see that area.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function member(estateId) {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId))
+        && firestore.get(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId)).data.status == 'active';
+    }
+
+    function role(estateId) {
+      return firestore.get(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId)).data.role;
+    }
+
+    match /estates/{estateId}/ledger/{entryId}/{fileName} {
+      allow read: if member(estateId) && role(estateId) in ['manager', 'exco'];
+      allow write: if false;
+    }
+
+    match /estates/{estateId}/tickets/{ticketId}/{fileName} {
+      allow read: if member(estateId) && role(estateId) in ['manager', 'exco'];
+      allow write: if false;
+    }
+
+    match /estates/{estateId}/passes/{passId}/{fileName} {
+      allow read: if member(estateId) && role(estateId) in ['manager', 'guard'];
+      allow write: if false;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

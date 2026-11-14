@@ -1,0 +1,46 @@
+# dependencies
+/node_modules
+/functions/node_modules
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+/test-results
+/playwright-report
+/blob-report
+
+# next.js
+/.next/
+/out/
+/build
+/functions/lib
+
+# firebase
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+storage-debug.log*
+ui-debug.log*
+database-debug.log*
+pubsub-debug.log*
+/.emulator-data
+
+# misc
+.DS_Store
+*.pem
+service-account*.json
+
+# debug
+npm-debug.log*
+
+# env files: only the example is committed
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
