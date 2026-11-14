@@ -58,6 +58,7 @@ webhook at `/api/webhooks/paystack` (for example through a tunnel).
 | `npm run seed` | Seed the emulators |
 | `npm run grant-platform-admin -- email` | Grant (or `--revoke`) the platform admin claim |
 | `npm run functions:build` | Bundle the scheduled Cloud Functions |
+| `npm run check:secrets` | After a build, fail if any secret reached the browser bundle |
 
 Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to use a preinstalled Chromium instead of
 `npx playwright install`.
@@ -132,6 +133,12 @@ docs/   operations.md · landing-page-brief.md
   in `src/config/marketing.ts` stay hidden until real content is supplied
   (see `docs/landing-page-brief.md`). The privacy notice and terms contain `{{legal_entity}}` and
   `{{privacy_contact_email}}` placeholders that must be filled and legally reviewed.
+
+## Pre launch checklist
+
+The 20 point website launch checklist (privacy, HTTPS, consent, SEO, speed, accessibility,
+spam protection, analytics, error monitoring...) is mapped to code and tests in
+[`docs/launch-checklist.md`](docs/launch-checklist.md).
 
 ## Deployment
 

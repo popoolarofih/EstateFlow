@@ -32,7 +32,9 @@ export function TaglineReveal({ lines }: { lines: string[] }) {
   }, []);
 
   return (
-    <p ref={ref} className="max-w-[680px] heading-4 text-ink md:heading-2" aria-label={lines.join(" ")}>
+    <p ref={ref} className="max-w-[680px] heading-4 text-ink md:heading-2">
+      {/* Screen readers get the sentence once; the animated words are decorative. */}
+      <span className="sr-only">{lines.join(" ")}</span>
       {lines.map((line, lineIndex) => (
         <span key={lineIndex} className="block" aria-hidden>
           {line.split(" ").map((word, wordIndex) => (

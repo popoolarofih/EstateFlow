@@ -22,7 +22,11 @@ export const metadata: Metadata = {
     title: "EstateFlow · The estate, under control",
     description: "Visitor passes in seconds, verified dues payments, and a ledger every resident can read.",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    title: "EstateFlow · The estate, under control",
+    description: "Visitor passes in seconds, verified dues payments, and a ledger every resident can read.",
+  },
   formatDetection: { telephone: false },
 };
 
@@ -39,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-dvh">
         <a
           href="#main"
-          className="sr-only z-50 rounded-lg bg-navy px-3 py-2 button-sm text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-50 rounded-lg bg-navy button-sm text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:px-3 focus:py-2"
         >
           Skip to content
         </a>

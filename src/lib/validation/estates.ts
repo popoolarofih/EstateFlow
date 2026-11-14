@@ -63,6 +63,8 @@ export const pilotRequestSchema = z.object({
   city: z.string().trim().min(2, { error: "Enter the city." }).max(60),
   units: z.coerce.number().int().min(5, { error: "Pilots start at 5 units." }).max(5000),
   message: z.string().trim().max(1000).optional().default(""),
-  /** Honeypot field: real people never fill it. */
-  website: z.string().max(0).optional().default(""),
+  /** Honeypot field: real people never fill it. Accepted here and dropped by the service. */
+  website: z.string().max(500).optional().default(""),
+  /** Milliseconds between the form rendering and submission (time trap). */
+  elapsedMs: z.number().int().min(0).max(86_400_000).optional(),
 });

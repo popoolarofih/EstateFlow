@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect } from "react";
 import { Button, buttonClasses } from "@/components/ui/button";
+import { reportClientError } from "@/lib/monitoring/client";
 
 export default function ErrorBoundary({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
-    console.error(error);
+    reportClientError(error);
   }, [error]);
   return (
     <main id="main" className="mx-auto flex min-h-[60dvh] max-w-md flex-col items-center justify-center gap-4 px-4 text-center">

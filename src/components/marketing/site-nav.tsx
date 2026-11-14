@@ -8,9 +8,10 @@ import { buttonClasses } from "@/components/ui/button";
 import { cx } from "@/components/ui/cx";
 
 const LINKS = [
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#benefits", label: "Benefits" },
-  { href: "#faq", label: "FAQ" },
+  // Absolute "/#..." so the links also work from the legal pages.
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#benefits", label: "Benefits" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/sign-in", label: "Sign in" },
 ];
 
@@ -48,7 +49,7 @@ export function SiteNav() {
             ))}
           </ul>
           <div className="hidden md:block">
-            <Link href="#pilot" className={buttonClasses("dark", "sm")}>
+            <Link href="/#pilot" className={buttonClasses("dark", "sm")}>
               Book a pilot
             </Link>
           </div>
@@ -79,7 +80,7 @@ export function SiteNav() {
         )}
       >
         <ul className="flex flex-col gap-1">
-          {[...LINKS, { href: "#pilot", label: "Book a pilot" }].map((link, index) => (
+          {[...LINKS, { href: "/#pilot", label: "Book a pilot" }].map((link, index) => (
             <li
               key={link.href}
               className={cx("transition duration-500 ease-weighted", open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0")}

@@ -27,7 +27,8 @@
 
   --color-ink: #101b35;
   --color-muted: #566079;
-  --color-subtle: #7a8399;
+  /* 4.8:1 on canvas, 5.2:1 on white (WCAG AA for body text). */
+  --color-subtle: #646d85;
   --color-line: #e1e6ef;
   --color-line-strong: #c9d1de;
   --color-surface: #ffffff;

@@ -17,11 +17,13 @@
     "emulators:fresh": "firebase emulators:start --project demo-estateflow",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "grant-platform-admin": "tsx --env-file=.env.local scripts/grant-platform-admin.ts",
-    "functions:build": "npm --prefix functions run build"
+    "functions:build": "npm --prefix functions run build",
+    "check:secrets": "node --env-file-if-exists=.env.local scripts/check-client-secrets.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.6",
     "@phosphor-icons/react": "^2.1.10",
+    "@vercel/analytics": "^2.0.1",
     "date-fns": "^4.4.0",
     "firebase": "^12.19.0",
     "firebase-admin": "^14.5.1",
@@ -37,6 +39,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@firebase/rules-unit-testing": "^5.0.2",
     "@playwright/test": "^1.65.1",
     "@tailwindcss/turbopack": "4.3.3",

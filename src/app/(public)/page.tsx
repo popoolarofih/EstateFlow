@@ -232,16 +232,18 @@ export default function LandingPage() {
               {STEPS.map((step, index) => {
                 const Icon = step.icon;
                 return (
-                  <Reveal key={step.title} delay={index * 80}>
-                    <li className="flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-navy-soft p-6">
+                  <li key={step.title}>
+                    <Reveal delay={index * 80} className="h-full">
+                    <div className="flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-navy-soft p-6">
                       <div className="flex items-center gap-3">
                         <span className="flex size-10 items-center justify-center rounded-xl bg-teal font-mono title-3 text-navy">{index + 1}</span>
                         <Icon size={24} className="text-white/70" aria-hidden />
                       </div>
                       <h3 className="heading-6">{step.title}</h3>
                       <p className="body-6 text-white/70">{step.body}</p>
-                    </li>
-                  </Reveal>
+                    </div>
+                    </Reveal>
+                  </li>
                 );
               })}
             </ol>

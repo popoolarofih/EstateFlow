@@ -10,6 +10,7 @@ import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { Notice } from "@/components/ui/feedback";
 import { submitWith, text } from "@/components/ui/forms";
 import { api, ApiError, errorMessage } from "@/lib/api/client";
+import { compressImage } from "@/lib/images/compress";
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "@/lib/ledger/ledger";
 import { formatNaira, parseNairaToKobo } from "@/lib/money";
 
@@ -43,7 +44,8 @@ export function LedgerEntryDialog({ dualApprovalThresholdKobo }: { dualApprovalT
             body.set("description", text(form, "description"));
             body.set("amountKobo", String(amountKobo));
             body.set("transactionDate", text(form, "transactionDate"));
-            for (const file of evidence) body.append("evidence", file);
+            // Photos of receipts are compressed; PDFs pass through unchanged.
+            for (const file of evidence) body.append("evidence", await compressImage(file, { maxDimension: 2000, quality: 0.85 }));
             setPending(true);
             setError(null);
             setFieldErrors({});
@@ -92,7 +94,7 @@ export function LedgerEntryDialog({ dualApprovalThresholdKobo }: { dualApprovalT
             </Field>
           </div>
           <Field id="evidence" label="Evidence" optional={type === "income"} hint="Invoice, receipt or bank slip. Images or PDF, up to 10 MB each, 5 files.">
-            <input id="evidence" name="evidence" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple className="body-6 file:mr-3 file:min-h-10 file:rounded-lg file:border-0 file:bg-canvas file:px-3 file:py-2 file:button-sm" />
+            <input id="evidence" name="evidence" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf" multiple className="body-6 file:mr-3 file:min-h-10 file:rounded-lg file:border-0 file:bg-canvas file:px-3 file:py-2 file:button-sm" />
           </Field>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setOpen(false)} disabled={pending}>

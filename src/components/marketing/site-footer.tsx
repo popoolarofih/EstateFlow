@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CookieSettingsLink } from "@/components/analytics/analytics";
 import { Logo } from "@/components/layout/logo";
 
 export function SiteFooter() {
@@ -16,6 +17,7 @@ export function SiteFooter() {
           <Link href="/#pilot" className="body-6 text-muted hover:text-ink">Book a pilot</Link>
           <Link href="/privacy" className="body-6 text-muted hover:text-ink">Privacy notice</Link>
           <Link href="/terms" className="body-6 text-muted hover:text-ink">Terms of use</Link>
+          <CookieSettingsLink className="text-left body-6 text-muted hover:text-ink" />
         </nav>
       </div>
       <p className="mx-auto mt-8 max-w-6xl caption-2 text-subtle">EstateFlow. Built in Nigeria for Nigerian estates.</p>
