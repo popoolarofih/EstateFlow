@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import { siteUrl } from "@/lib/site-url";
 
-const baseUrl = process.env.APP_BASE_URL ?? "http://localhost:3000";
+const baseUrl = siteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

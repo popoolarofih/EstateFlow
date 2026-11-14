@@ -1,5 +1,6 @@
 import "server-only";
 import { AppError } from "@/lib/errors";
+import { siteUrl } from "@/lib/site-url";
 
 /** Server side configuration. Secrets are read lazily so a missing optional secret only fails its feature. */
 
@@ -22,7 +23,7 @@ export function paystackWebhookSecret(): string | null {
 }
 
 export function appBaseUrl(): string {
-  return (process.env.APP_BASE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  return siteUrl();
 }
 
 export function appCheckEnforced(): boolean {

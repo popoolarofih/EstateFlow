@@ -58,7 +58,7 @@
     "vitest": "^5.1.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
   },
   "overrides": {
     "@firebase/app": "0.16.6",
