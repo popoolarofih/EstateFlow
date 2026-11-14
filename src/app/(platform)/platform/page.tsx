@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { CreateEstateForm } from "@/components/admin/create-estate-form";
@@ -18,6 +19,7 @@ import type { Estate } from "@/types/domain";
 export const metadata: Metadata = { title: "Platform administration", robots: { index: false } };
 
 async function Platform() {
+  await connection();
   const user = await getSessionUser();
   if (!user) redirect("/sign-in");
   if (!user.platformAdmin) redirect("/no-access");

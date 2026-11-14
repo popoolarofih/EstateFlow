@@ -7,28 +7,29 @@ rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
 
-    function member(estateId) {
-      return request.auth != null
-        && firestore.exists(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId))
-        && firestore.get(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId)).data.status == 'active';
+    function membership(estateId) {
+      return firestore.get(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId));
     }
 
-    function role(estateId) {
-      return firestore.get(/databases/(default)/documents/estateMembers/$(request.auth.uid + '_' + estateId)).data.role;
+    // A missing membership document makes `.data` fail, which denies the request.
+    function memberWithRole(estateId, roles) {
+      return request.auth != null
+        && membership(estateId).data.status == 'active'
+        && membership(estateId).data.role in roles;
     }
 
     match /estates/{estateId}/ledger/{entryId}/{fileName} {
-      allow read: if member(estateId) && role(estateId) in ['manager', 'exco'];
+      allow read: if memberWithRole(estateId, ['manager', 'exco']);
       allow write: if false;
     }
 
     match /estates/{estateId}/tickets/{ticketId}/{fileName} {
-      allow read: if member(estateId) && role(estateId) in ['manager', 'exco'];
+      allow read: if memberWithRole(estateId, ['manager', 'exco']);
       allow write: if false;
     }
 
     match /estates/{estateId}/passes/{passId}/{fileName} {
-      allow read: if member(estateId) && role(estateId) in ['manager', 'guard'];
+      allow read: if memberWithRole(estateId, ['manager', 'guard']);
       allow write: if false;
     }
 

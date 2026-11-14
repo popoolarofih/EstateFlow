@@ -1,5 +1,6 @@
 import "server-only";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 import { can, type Action } from "@/lib/auth/permissions";
 import { getSessionUser, type SessionUser } from "@/lib/auth/session";
@@ -59,6 +60,8 @@ function allowed(context: ActiveContext, actions: Action | readonly Action[]): b
 
 /** For Server Components: redirects instead of throwing. Any one of `actions` is sufficient. */
 export async function requirePageContext(actions?: Action | readonly Action[]): Promise<ActiveContext> {
+  // Authenticated content is always request time (it also reads the clock), never prerendered.
+  await connection();
   const user = await getSessionUser();
   if (!user) redirect("/sign-in");
   const context = await getActiveContext();

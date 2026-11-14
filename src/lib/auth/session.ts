@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { connection } from "next/server";
 import { cache } from "react";
 import { AppError } from "@/lib/errors";
 import { adminAuth } from "@/lib/firebase/admin";
@@ -58,6 +59,8 @@ export function sessionCookieOptions(maxAgeSeconds: number) {
 
 /** Verifies the session cookie (including revocation) once per request. */
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
+  // Session data is request time only; nothing derived from it may enter a prerendered shell.
+  await connection();
   const cookie = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!cookie) return null;
   try {

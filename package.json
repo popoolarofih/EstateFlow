@@ -11,7 +11,7 @@
     "test": "vitest run --project unit",
     "test:integration": "firebase emulators:exec --only auth,firestore,storage --project demo-estateflow \"vitest run --project integration\"",
     "test:rules": "firebase emulators:exec --only firestore,storage --project demo-estateflow \"vitest run --project rules\"",
-    "test:e2e": "playwright test --trace off",
+    "test:e2e": "firebase emulators:exec --only auth,firestore,storage --project demo-estateflow \"tsx scripts/seed.ts && playwright test --trace off\"",
     "test:all": "npm run typecheck && npm run lint && npm test && npm run test:rules && npm run test:integration",
     "emulators": "firebase emulators:start --project demo-estateflow --import=.emulator-data --export-on-exit=.emulator-data",
     "emulators:fresh": "firebase emulators:start --project demo-estateflow",
@@ -59,5 +59,9 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "overrides": {
+    "@firebase/app": "0.16.6",
+    "@firebase/app-compat": "0.5.22"
   }
 }

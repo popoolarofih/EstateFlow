@@ -37,7 +37,12 @@ export function adminApp(): App {
 export function adminDb(): Firestore {
   if (!firestore) {
     firestore = getFirestore(adminApp());
-    firestore.settings({ ignoreUndefinedProperties: true });
+    try {
+      firestore.settings({ ignoreUndefinedProperties: true });
+    } catch {
+      // Separate server bundles share one Firestore instance per app; another bundle already
+      // applied these same settings through this function.
+    }
   }
   return firestore;
 }

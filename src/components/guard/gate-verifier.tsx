@@ -41,6 +41,8 @@ export function GateVerifier({ gates, timezone, contacts }: { gates: Gate[]; tim
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [scanning, setScanning] = useState(false);
   const canScan = useSyncExternalStore(noopSubscribe, qrScanningSupported, () => false);
+  // False in the server HTML, true once the keypad is interactive.
+  const ready = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
   const reset = useCallback(() => {
     setOutcome(null);
@@ -107,7 +109,7 @@ export function GateVerifier({ gates, timezone, contacts }: { gates: Gate[]; tim
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6" data-ready={ready}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <GatePicker gates={gates} gateId={gateId} onChange={setGateId} />
         {canScan && (

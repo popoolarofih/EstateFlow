@@ -1,0 +1,20 @@
+{
+  "name": "estateflow-functions",
+  "private": true,
+  "description": "EstateFlow scheduled jobs (Cloud Functions 2nd gen). Domain code is bundled from ../src.",
+  "main": "lib/index.js",
+  "engines": { "node": "22" },
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node22 --format=cjs --outfile=lib/index.js --tsconfig=tsconfig.json --alias:server-only=./src/empty.ts --external:firebase-admin --external:firebase-functions",
+    "typecheck": "tsc --noEmit",
+    "deploy": "firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "14.5.1",
+    "firebase-functions": "7.4.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "typescript": "^5"
+  }
+}

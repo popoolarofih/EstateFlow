@@ -37,6 +37,9 @@ export default defineConfig({
         test: {
           name: "rules",
           environment: "node",
+          // rules-unit-testing registers the compat SDKs through side effect imports; inline it so
+          // they share one module instance with the test file.
+          server: { deps: { inline: [/@firebase\/rules-unit-testing/, /firebase\/compat/] } },
           include: ["tests/rules/**/*.test.ts"],
           fileParallelism: false,
           testTimeout: 30_000,

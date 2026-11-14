@@ -1,6 +1,7 @@
 import "server-only";
 import { createHmac } from "node:crypto";
-import { NextResponse, type NextRequest } from "next/server";
+import { unstable_rethrow } from "next/navigation";
+import { connection, NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { actorName, requireApiContext, type ActiveContext } from "@/lib/auth/authorize";
 import type { Action } from "@/lib/auth/permissions";
@@ -147,6 +148,8 @@ export function apiRoute<S extends z.ZodType | undefined = undefined, M extends 
   return async (request: NextRequest, routeContext: RouteParams): Promise<Response> => {
     const started = Date.now();
     let uid: string | null = null;
+    // Every API response depends on the request (session, body, query); never prerender it.
+    await connection();
     try {
       assertSameOrigin(request);
       if (options.auth !== "public") await assertAppCheck(request);
@@ -192,6 +195,8 @@ export function apiRoute<S extends z.ZodType | undefined = undefined, M extends 
       if (result instanceof Response) return result;
       return NextResponse.json(result ?? { ok: true }, { headers: { "Cache-Control": "no-store" } });
     } catch (error) {
+      // Let Next.js control flow errors (dynamic bail outs, redirects) propagate untouched.
+      unstable_rethrow(error);
       const appError = toAppError(error);
       const fields = { method: request.method, path: request.nextUrl.pathname, uid, ms: Date.now() - started };
       if (appError.status >= 500) logger.error("api request failed", { ...fields, error });
