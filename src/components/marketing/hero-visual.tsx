@@ -1,4 +1,4 @@
-import { CheckCircle, QrCode, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
+import { CheckCircle, QrCode, ShieldCheck } from "@/components/ui/icons";
 
 /** Product illustration built from the real UI language: guard decision and resident pass card. */
 export function HeroVisual() {
@@ -18,7 +18,7 @@ export function HeroVisual() {
         </div>
         <div className="mt-4 grid grid-cols-3 gap-2">
           {["1", "2", "3", "4", "5", "6"].map((digit) => (
-            <span key={digit} className="flex h-12 items-center justify-center rounded-xl bg-white/10 font-mono title-2 text-white">
+            <span key={digit} className="flex h-12 items-center justify-center rounded-xl bg-white/10 tabular-nums title-2 text-white">
               {digit}
             </span>
           ))}
@@ -33,7 +33,7 @@ export function HeroVisual() {
         <p className="caption-5 text-muted">Today, 9:00 am to 6:30 pm</p>
       </div>
       <div className="absolute -right-2 -top-6 flex items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 shadow-md sm:-right-8">
-        <ShieldCheck size={20} className="text-teal-ink" />
+        <ShieldCheck size={20} weight="duotone" className="text-teal-ink" />
         <p className="caption-3 text-ink">Paystack confirmed</p>
       </div>
     </div>

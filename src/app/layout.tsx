@@ -1,10 +1,22 @@
 import type { Metadata, Viewport } from "next";
 import { GeistMono } from "geist/font/mono";
-import { GeistSans } from "geist/font/sans";
+import localFont from "next/font/local";
 import "./globals.css";
 import { siteUrl } from "@/lib/site-url";
 
 const baseUrl = siteUrl();
+
+/**
+ * Manrope (variable, 200 to 800), self hosted and preloaded. Covers Latin; characters it lacks
+ * (₦, Yoruba ẹ ọ ṣ and tone marks) come from the "EstateFlow Glyphs" faces in globals.css.
+ */
+const manrope = localFont({
+  src: "./fonts/manrope-latin-wght-normal.woff2",
+  variable: "--font-manrope",
+  weight: "200 800",
+  style: "normal",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -39,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-NG" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en-NG" className={`${manrope.variable} ${GeistMono.variable}`}>
       <body className="min-h-dvh">
         <a
           href="#main"

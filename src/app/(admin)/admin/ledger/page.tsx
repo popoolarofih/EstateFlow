@@ -1,4 +1,4 @@
-import { FileText, Notebook } from "@phosphor-icons/react/dist/ssr";
+import { FileText, Notebook } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LedgerEntryDialog, LedgerRowActions } from "@/components/admin/ledger-actions";
@@ -71,7 +71,7 @@ async function Ledger() {
                     </span>
                   )}
                 </Td>
-                <Td className="font-mono tabular-nums">{formatNaira(entry.amountKobo)}</Td>
+                <Td className="tabular-nums">{formatNaira(entry.amountKobo)}</Td>
                 <Td>
                   {entry.source === "payment" ? "Provider verified" : `${entry.approvals.length} of ${entry.requiredApprovals}`}
                   {entry.approvals.length > 0 && <span className="block caption-2 text-muted">{entry.approvals.map((approval) => approval.name).join(", ")}</span>}

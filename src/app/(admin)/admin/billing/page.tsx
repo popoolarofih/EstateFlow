@@ -1,4 +1,4 @@
-import { Receipt } from "@phosphor-icons/react/dist/ssr";
+import { Receipt } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import {
@@ -91,8 +91,8 @@ async function Billing({ searchParams }: { searchParams: Promise<Record<string, 
                   <tr key={invoice.id}>
                     <Td className="title-4">{invoice.unitLabel}</Td>
                     <Td>{invoice.periodKey}</Td>
-                    <Td className="font-mono tabular-nums">{formatNaira(invoice.amountDueKobo)}</Td>
-                    <Td className="font-mono tabular-nums">{formatNaira(invoice.amountPaidKobo)}</Td>
+                    <Td className="tabular-nums">{formatNaira(invoice.amountDueKobo)}</Td>
+                    <Td className="tabular-nums">{formatNaira(invoice.amountPaidKobo)}</Td>
                     <Td>{formatDate(invoice.dueAt, tz)}</Td>
                     <Td>
                       <InvoiceStatusBadge status={invoice.status} />
@@ -140,7 +140,7 @@ async function Billing({ searchParams }: { searchParams: Promise<Record<string, 
                       {rule.description && <span className="block caption-2 text-muted">{rule.description}</span>}
                     </Td>
                     <Td>{rule.frequency === "monthly" ? "Monthly" : "Quarterly"}</Td>
-                    <Td className="font-mono tabular-nums">{formatNaira(rule.amountKobo)}</Td>
+                    <Td className="tabular-nums">{formatNaira(rule.amountKobo)}</Td>
                     <Td>
                       <Badge tone={rule.status === "approved" ? "teal" : rule.status === "draft" ? "gold" : "neutral"}>
                         {rule.status === "approved" ? "Approved" : rule.status === "draft" ? "Awaiting approval" : "Archived"}
@@ -184,7 +184,7 @@ async function Billing({ searchParams }: { searchParams: Promise<Record<string, 
                 {data.payments.map((payment) => (
                   <tr key={payment.id}>
                     <Td className="font-mono caption-2">{payment.providerReference}</Td>
-                    <Td className="font-mono tabular-nums">{formatNaira(payment.amountKobo)}</Td>
+                    <Td className="tabular-nums">{formatNaira(payment.amountKobo)}</Td>
                     <Td>{formatDateTime(payment.createdAt, tz)}</Td>
                     <Td>{payment.verifiedAt ? formatDateTime(payment.verifiedAt, tz) : "Not yet"}</Td>
                     <Td>

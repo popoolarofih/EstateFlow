@@ -1,6 +1,6 @@
 "use client";
 
-import { Lightning, Plus, Trash } from "@phosphor-icons/react";
+import { Lightning, Plus, Trash } from "@/components/ui/icons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

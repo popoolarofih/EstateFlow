@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, Copy, Plus, ShareNetwork, WhatsappLogo } from "@phosphor-icons/react";
+import { Camera, Copy, Plus, ShareNetwork, WhatsappLogo } from "@/components/ui/icons";
 import QRCode from "qrcode";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";

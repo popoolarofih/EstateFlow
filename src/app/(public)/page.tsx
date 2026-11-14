@@ -14,7 +14,7 @@ import {
   Siren,
   UsersThree,
   Wrench,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@/components/ui/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HeroVisual } from "@/components/marketing/hero-visual";
@@ -140,7 +140,7 @@ export default function LandingPage() {
                 </Link>
               </div>
               <p className="flex items-start gap-2 caption-2 text-muted">
-                <ShieldCheck size={18} className="mt-0.5 shrink-0 text-teal-ink" aria-hidden />
+                <ShieldCheck size={18} weight="duotone" className="mt-0.5 shrink-0 text-teal-ink" aria-hidden />
                 <span>Works in any phone browser. Payments are confirmed with Paystack before a receipt is issued.</span>
               </p>
             </div>
@@ -193,7 +193,7 @@ export default function LandingPage() {
                   <Reveal key={benefit.title} delay={index * 60}>
                     <article className="flex h-full flex-col gap-4 rounded-3xl border border-line bg-surface p-6 transition duration-300 ease-weighted hover:-translate-y-1">
                       <span className="flex size-12 items-center justify-center rounded-2xl bg-navy text-teal" aria-hidden>
-                        <Icon size={24} />
+                        <Icon size={28} weight="duotone" />
                       </span>
                       <h3 className="heading-6 text-ink">{benefit.title}</h3>
                       <p className="body-6 text-muted">{benefit.body}</p>
@@ -236,8 +236,8 @@ export default function LandingPage() {
                     <Reveal delay={index * 80} className="h-full">
                     <div className="flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-navy-soft p-6">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-10 items-center justify-center rounded-xl bg-teal font-mono title-3 text-navy">{index + 1}</span>
-                        <Icon size={24} className="text-white/70" aria-hidden />
+                        <span className="flex size-10 items-center justify-center rounded-xl bg-teal tabular-nums title-3 text-navy">{index + 1}</span>
+                        <Icon size={28} weight="duotone" className="text-teal" aria-hidden />
                       </div>
                       <h3 className="heading-6">{step.title}</h3>
                       <p className="body-6 text-white/70">{step.body}</p>
@@ -265,7 +265,7 @@ export default function LandingPage() {
                 return (
                   <Reveal key={item.title} delay={index * 60}>
                     <article className="flex h-full gap-4 rounded-3xl border border-line p-6">
-                      <Icon size={24} className="shrink-0 text-violet" aria-hidden />
+                      <Icon size={28} weight="duotone" className="shrink-0 text-violet" aria-hidden />
                       <div className="flex flex-col gap-2">
                         <h3 className="title-2 text-ink">{item.title}</h3>
                         <p className="body-6 text-muted">{item.body}</p>
@@ -333,7 +333,7 @@ export default function LandingPage() {
                   "Export your records as CSV whenever you want",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3 body-5 text-ink">
-                    <ShieldCheck size={20} className="text-teal-ink" aria-hidden /> {item}
+                    <ShieldCheck size={20} weight="duotone" className="shrink-0 text-teal-ink" aria-hidden /> {item}
                   </li>
                 ))}
               </ul>

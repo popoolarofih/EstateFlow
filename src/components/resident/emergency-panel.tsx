@@ -1,6 +1,6 @@
 "use client";
 
-import { Phone, Siren, WarningCircle } from "@phosphor-icons/react";
+import { Phone, Siren, WarningCircle } from "@/components/ui/icons";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";

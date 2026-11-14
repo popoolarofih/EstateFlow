@@ -1,4 +1,4 @@
-import { Phone } from "@phosphor-icons/react/dist/ssr";
+import { Phone } from "@/components/ui/icons";
 import { SignOutButton } from "@/components/auth/sign-out-button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ROLE_LABELS } from "@/lib/auth/permissions";

@@ -1,6 +1,6 @@
 "use client";
 
-import { BellRinging } from "@phosphor-icons/react";
+import { BellRinging } from "@/components/ui/icons";
 import { getMessaging, getToken, isSupported } from "firebase/messaging";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";

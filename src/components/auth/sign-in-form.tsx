@@ -1,6 +1,6 @@
 "use client";
 
-import { EnvelopeSimple, Phone } from "@phosphor-icons/react";
+import { EnvelopeSimple, Phone } from "@/components/ui/icons";
 import {
   RecaptchaVerifier,
   sendPasswordResetEmail,

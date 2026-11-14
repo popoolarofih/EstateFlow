@@ -1,4 +1,4 @@
-import { Buildings } from "@phosphor-icons/react/dist/ssr";
+import { Buildings } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ImportPanel } from "@/components/admin/import-panel";

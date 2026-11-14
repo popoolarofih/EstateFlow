@@ -1,6 +1,6 @@
 "use client";
 
-import { Checks } from "@phosphor-icons/react";
+import { Checks } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "@/components/ui/use-mutation";
 import { api } from "@/lib/api/client";

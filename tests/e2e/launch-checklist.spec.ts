@@ -163,3 +163,29 @@ test("landing page meets the page speed budget", async ({ page }) => {
   expect(metrics.cls, "Cumulative Layout Shift").toBeLessThan(0.1);
   expect(metrics.ttfb, "Time to first byte (ms)").toBeLessThan(800);
 });
+
+test("naira amounts and Nigerian names render entirely in the brand fonts", async ({ page, context }) => {
+  await page.goto("/privacy");
+  await page.evaluate(() => {
+    const probe = document.createElement("p");
+    probe.id = "glyph-probe";
+    probe.className = "heading-4";
+    probe.textContent = "₦25,000.00 Adéwálé Ọ̀ṣúnfẹ́ Ṣadé Ngozi Ẹ̀mẹ́ka";
+    document.body.prepend(probe);
+  });
+  // unicode-range faces load on first use; wait for them, then read what Chrome actually painted.
+  await page.evaluate(async () => {
+    await document.fonts.load('600 36px "EstateFlow Nigerian"', "₦ṣẹọ\u0301");
+    await document.fonts.load('600 36px "EstateFlow Glyphs"', "ẹọ");
+    await document.fonts.ready;
+  });
+  await page.waitForTimeout(300);
+  const cdp = await context.newCDPSession(page);
+  await cdp.send("DOM.enable");
+  await cdp.send("CSS.enable");
+  const { root } = await cdp.send("DOM.getDocument");
+  const { nodeId } = await cdp.send("DOM.querySelector", { nodeId: root.nodeId, selector: "#glyph-probe" });
+  const { fonts } = await cdp.send("CSS.getPlatformFontsForNode", { nodeId });
+  const systemFonts = fonts.filter((font) => !font.isCustomFont).map((font) => `${font.familyName} (${font.glyphCount} glyphs)`);
+  expect(systemFonts, "glyphs fell back to a system font").toEqual([]);
+});

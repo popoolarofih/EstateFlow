@@ -41,7 +41,7 @@ export function StatCard({
         <span aria-hidden className={cx("size-2 rounded-full", accent)} />
         <p className="caption-1 text-muted">{label}</p>
       </div>
-      <p className="heading-5 font-mono tabular-nums text-ink">{value}</p>
+      <p className="heading-5 tabular-nums text-ink">{value}</p>
       {detail && <p className="caption-2 text-muted">{detail}</p>}
     </div>
   );

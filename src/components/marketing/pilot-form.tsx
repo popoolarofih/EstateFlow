@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle } from "@phosphor-icons/react";
+import { CheckCircle } from "@/components/ui/icons";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Textarea } from "@/components/ui/field";
@@ -9,6 +9,11 @@ import { submitWith, text } from "@/components/ui/forms";
 import { track } from "@/lib/analytics/track";
 import { api, ApiError, errorMessage } from "@/lib/api/client";
 import { normalizeNigerianPhone } from "@/lib/validation/common";
+
+/** Time trap input, read at submit time (outside render). */
+function millisecondsSincePageLoad(): number {
+  return Math.round(performance.now());
+}
 
 type Errors = Partial<Record<"name" | "email" | "phone" | "estateName" | "city" | "units", string>>;
 
@@ -63,7 +68,7 @@ export function PilotForm() {
               message: text(form, "message"),
               website: text(form, "website"),
               // Time trap: milliseconds since the page loaded; the server drops instant submissions.
-              elapsedMs: Math.round(performance.now()),
+              elapsedMs: millisecondsSincePageLoad(),
             },
           });
           setSentTo(text(form, "email"));

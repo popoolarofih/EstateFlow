@@ -1,4 +1,4 @@
-import { DownloadSimple, Notebook, Receipt } from "@phosphor-icons/react/dist/ssr";
+import { DownloadSimple, Notebook, Receipt } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -39,7 +39,7 @@ async function Payments() {
 
       <Card>
         <p className="caption-1 text-muted">Total outstanding</p>
-        <p className="heading-4 font-mono tabular-nums text-ink">{formatNaira(totalOutstanding)}</p>
+        <p className="heading-4 tabular-nums text-ink">{formatNaira(totalOutstanding)}</p>
         {!context.estate.paymentConfig.enabled && totalOutstanding > 0 && (
           <div className="mt-4">
             <Notice tone="info">Online payment is not enabled for your estate yet. Pay through your estate office for now.</Notice>

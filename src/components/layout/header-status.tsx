@@ -1,4 +1,4 @@
-import { Bell } from "@phosphor-icons/react/dist/ssr";
+import { Bell } from "@/components/ui/icons";
 import Link from "next/link";
 import { getActiveContext } from "@/lib/auth/authorize";
 import { unreadNotificationCount } from "@/server/repositories";
