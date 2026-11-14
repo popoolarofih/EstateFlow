@@ -124,7 +124,7 @@ export default function LandingPage() {
               <p className="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 caption-1 text-muted">
                 <span aria-hidden className="size-2 rounded-full bg-teal" /> Estate operations for Nigeria
               </p>
-              <h1 className="max-w-[680px] heading-3 hero-gradient-text md:heading-1">
+              <h1 className="max-w-[680px] heading-3 hero-gradient-text md:heading-2 xl:heading-1">
                 Every visitor verified.
                 <br />
                 Every naira accounted for.
@@ -139,9 +139,9 @@ export default function LandingPage() {
                   <ArrowRight size={20} aria-hidden />
                 </Link>
               </div>
-              <p className="flex flex-wrap items-center gap-2 caption-2 text-muted">
-                <ShieldCheck size={18} className="text-teal-ink" aria-hidden />
-                Works in any phone browser. Payments are confirmed with Paystack before a receipt is issued.
+              <p className="flex items-start gap-2 caption-2 text-muted">
+                <ShieldCheck size={18} className="mt-0.5 shrink-0 text-teal-ink" aria-hidden />
+                <span>Works in any phone browser. Payments are confirmed with Paystack before a receipt is issued.</span>
               </p>
             </div>
             <div className="px-4 pb-8 sm:px-12">

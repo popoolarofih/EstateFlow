@@ -47,9 +47,11 @@ export function SiteNav() {
               </li>
             ))}
           </ul>
-          <Link href="#pilot" className={cx(buttonClasses("dark", "sm"), "hidden md:inline-flex")}>
-            Book a pilot
-          </Link>
+          <div className="hidden md:block">
+            <Link href="#pilot" className={buttonClasses("dark", "sm")}>
+              Book a pilot
+            </Link>
+          </div>
           <button
             type="button"
             className="relative inline-flex size-12 items-center justify-center rounded-xl text-ink hover:bg-navy/5 md:hidden"

@@ -48,8 +48,8 @@ export interface SeededEstate {
 export async function seedEstate(id: string, options: { excoPermissions?: EstateMember["permissions"] } = {}): Promise<SeededEstate> {
   const db = adminDb();
   const estate = estateDoc(id);
-  const { id: _estateId, ...estateData } = estate;
-  await db.collection(COLLECTIONS.estates).doc(id).set(estateData);
+  const { id: estateId, ...estateData } = estate;
+  await db.collection(COLLECTIONS.estates).doc(estateId).set(estateData);
   const unit: Unit = {
     id: `${id}_unit1`,
     estateId: id,
