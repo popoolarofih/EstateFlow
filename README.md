@@ -10,13 +10,13 @@ This repository is the web MVP described in the *EstateFlow Next.js + Firebase M
 Residents, Gate Security, Facility Managers and Exco, on Firebase Authentication, Cloud Firestore,
 Cloud Storage, Cloud Functions (2nd gen) and App Check.
 
-| Role | Home | What they do |
-|---|---|---|
-| Resident | `/resident` | Invite guests, staff passes, pay dues, receipts, published ledger, maintenance, emergency alert |
-| Gate security | `/guard/verify` | Six digit keypad and QR scan, Allow / Do not allow, entry and exit log, live emergencies |
-| Facility manager | `/admin/overview` | Units, invitations, CSV import, billing, expenses, maintenance triage, settings, exports |
-| Exco / Treasurer | `/admin/overview` | Collections and ledger oversight; approve and publish by assigned permission |
-| Platform admin | `/platform` | Create estates and invite their first manager (custom claim, granted by script) |
+| Role             | Home                | What they do                                                                                    |
+| ---------------- | ------------------- | ----------------------------------------------------------------------------------------------- |
+| Resident         | `/resident`       | Invite guests, staff passes, pay dues, receipts, published ledger, maintenance, emergency alert |
+| Gate security    | `/guard/verify`   | Six digit keypad and QR scan, Allow / Do not allow, entry and exit log, live emergencies        |
+| Facility manager | `/admin/overview` | Units, invitations, CSV import, billing, expenses, maintenance triage, settings, exports        |
+| Exco / Treasurer | `/admin/overview` | Collections and ledger oversight; approve and publish by assigned permission                    |
+| Platform admin   | `/platform`       | Create estates and invite their first manager (custom claim, granted by script)                 |
 
 ## Quick start (local, fully on emulators)
 
@@ -33,11 +33,11 @@ npm run dev                        # terminal 3: http://localhost:3000
 
 Seeded accounts (password `EstateFlow!2026`):
 
-| Account | Email |
-|---|---|
-| Platform admin | `platform@estateflow.test` |
+| Account                | Email                                                                      |
+| ---------------------- | -------------------------------------------------------------------------- |
+| Platform admin         | `platform@estateflow.test`                                               |
 | Akobo Gardens (Ibadan) | `resident@akobo_gardens.test`, `guard@…`, `manager@…`, `exco@…` |
-| Lekki Palms (Lagos) | `resident@lekki_palms.test`, `guard@…`, `manager@…`, `exco@…` |
+| Lekki Palms (Lagos)    | `resident@lekki_palms.test`, `guard@…`, `manager@…`, `exco@…`   |
 
 Try the core loop: sign in as the Akobo resident, **Invite a guest**, then sign in as the Akobo
 guard and type the code. Typing the same code as the Lekki guard is denied (tenant isolation).
@@ -46,18 +46,18 @@ webhook at `/api/webhooks/paystack` (for example through a tunnel).
 
 ## Scripts
 
-| Script | What it does |
-|---|---|
-| `npm run dev` / `build` / `start` | Next.js |
-| `npm run typecheck`, `npm run lint` | TypeScript and ESLint |
-| `npm test` | Unit tests (domain logic, no emulator) |
-| `npm run test:rules` | Firestore and Storage Security Rules tests, two estates, on emulators |
-| `npm run test:integration` | Service tests against the Firestore emulator (passes, payments, ledger, isolation) |
-| `npm run test:e2e` | Playwright on a production build with seeded emulators (run `npm run build` first) |
-| `npm run test:all` | typecheck, lint, unit, rules and integration |
-| `npm run seed` | Seed the emulators |
-| `npm run grant-platform-admin -- email` | Grant (or `--revoke`) the platform admin claim |
-| `npm run functions:build` | Bundle the scheduled Cloud Functions |
+| Script                                    | What it does                                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------ |
+| `npm run dev` / `build` / `start`   | Next.js                                                                              |
+| `npm run typecheck`, `npm run lint`   | TypeScript and ESLint                                                                |
+| `npm test`                              | Unit tests (domain logic, no emulator)                                               |
+| `npm run test:rules`                    | Firestore and Storage Security Rules tests, two estates, on emulators                |
+| `npm run test:integration`              | Service tests against the Firestore emulator (passes, payments, ledger, isolation)   |
+| `npm run test:e2e`                      | Playwright on a production build with seeded emulators (run `npm run build` first) |
+| `npm run test:all`                      | typecheck, lint, unit, rules and integration                                         |
+| `npm run seed`                          | Seed the emulators                                                                   |
+| `npm run grant-platform-admin -- email` | Grant (or `--revoke`) the platform admin claim                                     |
+| `npm run functions:build`               | Bundle the scheduled Cloud Functions                                                 |
 
 Set `PLAYWRIGHT_CHROMIUM_EXECUTABLE` to use a preinstalled Chromium instead of
 `npx playwright install`.
