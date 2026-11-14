@@ -116,8 +116,17 @@ docs/   operations.md · landing-page-brief.md
 
 ### Decisions and deviations
 
-- **Icons: Phosphor** instead of Lucide, and **Geist** as the single typeface, to follow the
-  supplied landing page design skill. UI primitives are hand written accessible components in
+- **Typeface: Manrope**, self hosted and preloaded, with Geist Mono only for codes and references.
+  No allowed UI font includes the naira sign or Yoruba tone marks, so tiny Noto Sans subsets supply
+  ₦, Ṣ ṣ, Ẹ ẹ, Ọ ọ and combining tone marks through `unicode-range` (see `src/app/globals.css`); an
+  end to end test checks these never fall back to a system font.
+- **Icons: Solar** (Linear for interface, Bold for active states, Bold Duotone for illustrations)
+  through one tree shakeable module, `src/components/ui/icons.tsx`.
+- **Landing hero**: a Morning / Night scene (blurred sky, house layer that sinks into live WebGL2
+  fog and swaps time of day at the deepest point, colours mixed on one variable) driven by a single
+  `requestAnimationFrame` clock, in `src/components/marketing/estate-hero.tsx`. The six scene photos
+  are loaded from images.higgs.ai as specified; self host them under `public/` if that CDN is not
+  under your control. The loop pauses off screen and the switch is instant with reduced motion. UI primitives are hand written accessible components in
   the shadcn/ui style (native `<dialog>`, labelled fields) rather than the generated library.
 - **Next.js 16 Cache Components** are on. Authenticated content is request time
   (`connection()` in the session read) and streams behind Suspense skeletons.
