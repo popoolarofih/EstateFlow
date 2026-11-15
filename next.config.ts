@@ -15,13 +15,11 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   serverExternalPackages: ["firebase-admin"],
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
+  // Files read with fs at request time are invisible to output file tracing; include them so the
+  // deployed functions have them (the social images load their font from disk).
+  outputFileTracingIncludes: {
+    "/opengraph-image": ["./src/app/fonts/manrope-latin-700-normal.woff"],
+    "/twitter-image": ["./src/app/fonts/manrope-latin-700-normal.woff"],
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

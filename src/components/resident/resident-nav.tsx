@@ -1,6 +1,6 @@
 "use client";
 
-import { CurrencyNgn, House, UserCircle, Users, Wrench } from "@phosphor-icons/react";
+import { CurrencyNgn, House, UserCircle, Users, Wrench } from "@/components/ui/icons";
 import { BottomNav, TopTabs, type NavItem } from "@/components/layout/role-nav";
 
 const ITEMS: NavItem[] = [

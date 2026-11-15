@@ -1,6 +1,6 @@
 "use client";
 
-import { HardHat, Truck, User, UserCircle } from "@phosphor-icons/react";
+import { HardHat, Truck, User, UserCircle } from "@/components/ui/icons";
 import { useRouter } from "next/navigation";
 import { ConfirmButton } from "@/components/ui/confirm-button";
 import { List, ListRow } from "@/components/ui/list";

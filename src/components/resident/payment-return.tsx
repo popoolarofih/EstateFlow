@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, Clock, WarningCircle } from "@phosphor-icons/react";
+import { CheckCircle, Clock, WarningCircle } from "@/components/ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { LinkButton } from "@/components/ui/button";
 import { Notice } from "@/components/ui/feedback";

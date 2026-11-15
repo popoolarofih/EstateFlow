@@ -1,4 +1,4 @@
-import { Scroll } from "@phosphor-icons/react/dist/ssr";
+import { Scroll } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";

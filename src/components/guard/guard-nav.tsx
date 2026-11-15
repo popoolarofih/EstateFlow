@@ -1,6 +1,6 @@
 "use client";
 
-import { ClockCounterClockwise, Numpad, UserCircle } from "@phosphor-icons/react";
+import { ClockCounterClockwise, Numpad, UserCircle } from "@/components/ui/icons";
 import Link from "next/link";
 import { withPathname } from "@/components/layout/role-nav";
 import { cx } from "@/components/ui/cx";

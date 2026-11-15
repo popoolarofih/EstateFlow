@@ -1,4 +1,4 @@
-import { Users } from "@phosphor-icons/react/dist/ssr";
+import { Users } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { PassList } from "@/components/resident/pass-list";

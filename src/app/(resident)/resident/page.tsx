@@ -1,4 +1,4 @@
-import { ArrowRight, Notebook, Receipt, UserPlus, Users, Wrench } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRight, Notebook, Receipt, UserPlus, Users, Wrench } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -52,7 +52,7 @@ async function ResidentHome() {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-col gap-1">
             <p className="caption-1 text-muted">Outstanding balance</p>
-            <p className="heading-4 font-mono tabular-nums text-ink">{formatNaira(data.outstandingKobo)}</p>
+            <p className="heading-4 tabular-nums text-ink">{formatNaira(data.outstandingKobo)}</p>
             <p className="caption-2 text-muted">
               {data.openInvoiceCount === 0
                 ? "You are all paid up."

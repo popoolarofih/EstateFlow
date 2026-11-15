@@ -1,4 +1,4 @@
-import { Siren } from "@phosphor-icons/react/dist/ssr";
+import { Siren } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ResolveEmergencyButton } from "@/components/admin/resolve-emergency";

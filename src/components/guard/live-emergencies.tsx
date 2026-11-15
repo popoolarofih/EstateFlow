@@ -1,6 +1,6 @@
 "use client";
 
-import { Siren } from "@phosphor-icons/react";
+import { Siren } from "@/components/ui/icons";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

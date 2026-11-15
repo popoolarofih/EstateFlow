@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, FileText, Notebook } from "@phosphor-icons/react/dist/ssr";
+import { ArrowDown, ArrowUp, FileText, Notebook } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -45,7 +45,7 @@ async function Ledger() {
               }
               trailing={
                 <div className="flex flex-col items-end gap-1">
-                  <span className={`body-4 font-mono tabular-nums ${entry.type === "income" ? "text-teal-ink" : "text-ink"}`}>
+                  <span className={`body-4 tabular-nums ${entry.type === "income" ? "text-teal-ink" : "text-ink"}`}>
                     {entry.kind === "reversal"
                       ? `(${formatNaira(entry.amountKobo)})`
                       : `${entry.type === "income" ? "+" : "−"}${formatNaira(entry.amountKobo)}`}

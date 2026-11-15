@@ -12,7 +12,7 @@ import {
   UserCircle,
   Wrench,
   X,
-} from "@phosphor-icons/react";
+} from "@/components/ui/icons";
 import { useEffect, useState } from "react";
 import { SideNav, withPathname, type NavItem } from "@/components/layout/role-nav";
 import { cx } from "@/components/ui/cx";

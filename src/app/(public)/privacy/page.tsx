@@ -33,10 +33,14 @@ export default function PrivacyPage() {
         Only active members of your estate, limited by role. Gate security cannot see resident phone numbers, balances or
         payment records. Data from one estate is never visible to another estate.
       </p>
-      <h2>Cookies</h2>
+      <h2 id="cookies">Cookies and analytics</h2>
       <p>
-        EstateFlow uses one strictly necessary, secure cookie to keep you signed in. We do not use advertising or analytics
-        cookies, so no consent banner is shown.
+        EstateFlow uses one strictly necessary, secure cookie to keep you signed in. It does not need consent.
+      </p>
+      <p>
+        On our public pages we measure visits with privacy friendly analytics that uses no cookies and no personal data.
+        If we enable Google Analytics, it only runs after you accept analytics cookies in the banner, and you can change
+        your choice at any time from Cookie settings in the footer. Pages inside the signed in app are never tracked.
       </p>
       <h2>Retention</h2>
       <p>

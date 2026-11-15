@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOut } from "@phosphor-icons/react";
+import { SignOut } from "@/components/ui/icons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

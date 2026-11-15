@@ -42,9 +42,20 @@ export async function createSession(idToken: string): Promise<{ cookie: string; 
       email: decoded.email ?? null,
       phone: decoded.phone_number ?? null,
       emailVerified: decoded.email_verified ?? false,
-      platformAdmin: decoded.platformAdmin === true,
+      platformAdmin: isPlatformAdmin(decoded.uid, decoded.platformAdmin),
     },
   };
+}
+
+/**
+ * Platform administrators: the `platformAdmin` custom claim (granted by script), or a UID listed in
+ * PLATFORM_ADMIN_UIDS, which bootstraps the first administrator without a service account script.
+ * UIDs are unguessable and only someone with access to the deployment settings can list one.
+ */
+function isPlatformAdmin(uid: string, claim: unknown): boolean {
+  if (claim === true) return true;
+  const listed = (process.env.PLATFORM_ADMIN_UIDS ?? "").split(",").map((value) => value.trim()).filter(Boolean);
+  return listed.includes(uid);
 }
 
 export function sessionCookieOptions(maxAgeSeconds: number) {
@@ -70,7 +81,7 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
       email: decoded.email ?? null,
       phone: decoded.phone_number ?? null,
       emailVerified: decoded.email_verified ?? false,
-      platformAdmin: decoded.platformAdmin === true,
+      platformAdmin: isPlatformAdmin(decoded.uid, decoded.platformAdmin),
     };
   } catch (error) {
     logger.debug("session cookie rejected", { error });

@@ -1,6 +1,6 @@
 "use client";
 
-import { CreditCard } from "@phosphor-icons/react";
+import { CreditCard } from "@/components/ui/icons";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { api, errorMessage } from "@/lib/api/client";
