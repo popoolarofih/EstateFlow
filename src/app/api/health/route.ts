@@ -37,6 +37,8 @@ export async function GET() {
     check("firebase-admin/auth", () => import("firebase-admin/auth")),
     check("firebase-admin/firestore", () => import("firebase-admin/firestore")),
     check("firebase-admin/storage", () => import("firebase-admin/storage")),
+    check("firebase-admin/app-check", () => import("firebase-admin/app-check")),
+    check("firebase-admin/messaging", () => import("firebase-admin/messaging")),
     check("session module", () => import("@/lib/auth/session")),
     check("api handler module", () => import("@/lib/api/handler")),
   ]);
@@ -49,6 +51,7 @@ export async function GET() {
     privateKeyLooksValid: privateKey.includes("BEGIN PRIVATE KEY") && (privateKey.includes("\\n") || privateKey.includes("\n")),
     emulatorVariablesSet: MUST_BE_UNSET.filter((name) => Boolean(process.env[name])),
     emulatorsFlag: process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS ?? null,
+    platformAdminBootstrap: Boolean(process.env.PLATFORM_ADMIN_UIDS?.trim()),
   };
   return NextResponse.json(body, { status: body.ok ? 200 : 500, headers: { "Cache-Control": "no-store" } });
 }

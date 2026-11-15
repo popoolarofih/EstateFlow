@@ -60,8 +60,18 @@ Never put secrets in Firestore, `NEXT_PUBLIC_*` variables or the repository.
     private key with its `\n` escapes on one line.
   - `PASS_CODE_HMAC_SECRET` (32+ random characters), `PAYSTACK_SECRET_KEY` when payments go live,
     and `APP_BASE_URL` once a custom domain is connected.
+  - `PLATFORM_ADMIN_UIDS`: your Firebase Auth user UID, to reach `/platform` and create estates.
+- Check `https://<domain>/api/health` after each deploy: it reports module load errors and which
+  settings are missing (yes/no only).
 - In Firebase Authentication > Settings > Authorized domains, add the Vercel domain.
 - Redeploy after changing variables (`NEXT_PUBLIC_*` values are baked in at build time).
+
+### Why jwks-rsa is pinned
+
+Vercel's Node runtime does not allow `require()` of ES modules. `firebase-admin` depends on
+`jwks-rsa` 4, which requires the ESM only `jose` 6, so every route that imported
+`firebase-admin/auth` crashed with `ERR_REQUIRE_ESM`. An npm override pins `jwks-rsa` 3.2.2
+(same API, CommonJS `jose` 4). `tests/unit/runtime-compat.test.ts` guards this.
 
 ### Why production builds use webpack
 
