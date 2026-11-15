@@ -1,7 +1,15 @@
 "use client";
 
 import type { ApiErrorBody, ErrorCode } from "@/lib/errors";
-import { appCheckToken } from "@/lib/firebase/client";
+
+const APP_CHECK_ENABLED = Boolean(process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_SITE_KEY);
+
+/** Loads the Firebase SDK only when App Check is configured, keeping it off public pages otherwise. */
+async function appCheckHeader(): Promise<string | null> {
+  if (!APP_CHECK_ENABLED) return null;
+  const { appCheckToken } = await import("@/lib/firebase/client");
+  return appCheckToken();
+}
 
 export class ApiError extends Error {
   constructor(
@@ -24,7 +32,7 @@ interface ApiOptions {
 /** Typed fetch for the EstateFlow API with consistent, user safe error messages. */
 export async function api<T = unknown>(path: string, options: ApiOptions = {}): Promise<T> {
   const headers: Record<string, string> = { Accept: "application/json" };
-  const token = await appCheckToken();
+  const token = await appCheckHeader();
   if (token) headers["X-Firebase-AppCheck"] = token;
   let body: BodyInit | undefined;
   if (options.formData) body = options.formData;

@@ -9,7 +9,7 @@ export default function NotFound() {
         <Logo />
       </header>
       <main id="main" className="flex flex-1 flex-col items-center justify-center gap-6 px-4 pb-24 text-center">
-        <p className="font-mono heading-2 text-navy">404</p>
+        <p className="heading-2 tabular-nums text-navy">404</p>
         <h1 className="heading-5 text-ink">This page is not on the guest list</h1>
         <p className="max-w-md body-6 text-muted">The link may be old or mistyped. Head back and try again.</p>
         <div className="flex flex-wrap justify-center gap-2">

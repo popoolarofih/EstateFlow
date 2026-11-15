@@ -63,6 +63,13 @@ Index. Evergreen offer with matching search intent.
 - Title: `EstateFlow · Visitor passes and estate dues for Nigerian estates`
 - Meta description: `EstateFlow gives gated estates in Nigeria verified visitor passes at the gate, service charge invoices with trustworthy receipts, and a ledger residents can read.`
 
+## Hero (current)
+
+Full viewport Morning / Night fog scene, adapted from the supplied "Lumen Roof" design approach with
+EstateFlow's brand, copy and Manrope instead of the original company's: headline "Every visitor
+verified. / Every naira accounted for.", toggle "Morning: Passes in seconds" and "Night: Alerts
+straight to the gate", primary CTA "Book a pilot walkthrough". Starts on Night.
+
 ## 7. Layout
 
 **A. Classic hero plus sections.** The product is understood from a gate screen and a pass card,

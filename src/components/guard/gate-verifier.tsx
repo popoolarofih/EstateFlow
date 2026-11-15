@@ -1,6 +1,6 @@
 "use client";
 
-import { Backspace, CheckCircle, Prohibit, QrCode, WarningCircle, WifiSlash } from "@phosphor-icons/react";
+import { Backspace, CheckCircle, Prohibit, QrCode, WarningCircle, WifiSlash } from "@/components/ui/icons";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { cx } from "@/components/ui/cx";
 import { api, ApiError } from "@/lib/api/client";
@@ -190,7 +190,7 @@ function KeypadButton({
       aria-label={ariaLabel}
       className={cx(
         "flex h-20 items-center justify-center rounded-2xl bg-white/10 text-white transition duration-300 ease-weighted hover:bg-white/20 active:scale-[0.98] disabled:opacity-50",
-        small ? "button-lg" : "heading-4 font-mono",
+        small ? "button-lg" : "heading-4 tabular-nums",
       )}
     >
       {label}

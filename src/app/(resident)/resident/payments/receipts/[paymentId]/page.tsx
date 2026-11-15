@@ -1,4 +1,4 @@
-import { ArrowLeft, DownloadSimple } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, DownloadSimple } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -45,7 +45,7 @@ async function ReceiptView({ params }: { params: Promise<{ paymentId: string }> 
         </div>
         <div className="rounded-xl bg-canvas p-4">
           <p className="caption-1 text-muted">Amount received</p>
-          <p className="heading-4 font-mono tabular-nums text-ink">{formatNaira(receipt.amountKobo)}</p>
+          <p className="heading-4 tabular-nums text-ink">{formatNaira(receipt.amountKobo)}</p>
         </div>
         <dl className="grid gap-3">
           {rows.map(([label, value]) => (

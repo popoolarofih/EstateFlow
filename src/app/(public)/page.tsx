@@ -1,5 +1,4 @@
 import {
-  ArrowRight,
   Bell,
   Buildings,
   ClipboardText,
@@ -14,16 +13,14 @@ import {
   Siren,
   UsersThree,
   Wrench,
-} from "@phosphor-icons/react/dist/ssr";
+} from "@/components/ui/icons";
 import type { Metadata } from "next";
-import Link from "next/link";
+import { EstateHero } from "@/components/marketing/estate-hero";
 import { HeroVisual } from "@/components/marketing/hero-visual";
 import { PilotForm } from "@/components/marketing/pilot-form";
 import { Reveal } from "@/components/marketing/reveal";
-import { SiteNav } from "@/components/marketing/site-nav";
 import { TaglineReveal } from "@/components/marketing/tagline-reveal";
 import { SiteFooter } from "@/components/marketing/site-footer";
-import { buttonClasses } from "@/components/ui/button";
 import { FAQ, publishedTestimonials } from "@/config/marketing";
 
 export const metadata: Metadata = {
@@ -115,50 +112,28 @@ export default function LandingPage() {
   const testimonials = publishedTestimonials();
   return (
     <div className="bg-surface">
-      <SiteNav />
       <main id="main">
-        {/* Hero */}
-        <section className="overflow-hidden bg-canvas px-4 pb-24 pt-32 md:pb-32 md:pt-40">
-          <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1fr_440px]">
-            <div className="flex flex-col gap-6">
-              <p className="inline-flex w-fit items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 caption-1 text-muted">
-                <span aria-hidden className="size-2 rounded-full bg-teal" /> Estate operations for Nigeria
-              </p>
-              <h1 className="max-w-[680px] heading-3 hero-gradient-text md:heading-2 xl:heading-1">
-                Every visitor verified.
-                <br />
-                Every naira accounted for.
-              </h1>
-              <p className="max-w-[680px] body-3 text-muted md:title-1 md:font-normal">
-                EstateFlow gives gated estates six digit visitor passes your guards check in seconds, dues invoices paid through
-                Paystack with real receipts, and a ledger every resident can read.
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Link href="#pilot" className={buttonClasses("dark", "lg")}>
-                  <span>Book a pilot walkthrough</span>
-                  <ArrowRight size={20} aria-hidden />
-                </Link>
-              </div>
-              <p className="flex items-start gap-2 caption-2 text-muted">
-                <ShieldCheck size={18} className="mt-0.5 shrink-0 text-teal-ink" aria-hidden />
-                <span>Works in any phone browser. Payments are confirmed with Paystack before a receipt is issued.</span>
-              </p>
-            </div>
-            <div className="px-4 pb-8 sm:px-12">
-              <HeroVisual />
-            </div>
-          </div>
-        </section>
+        {/* Hero: Morning / Night fog scene, includes the main navigation */}
+        <EstateHero />
 
         {/* Problem to solution */}
         <section aria-labelledby="problem-title" className="px-4 py-24 md:py-32">
           <div className="mx-auto flex max-w-6xl flex-col gap-12">
-            <Reveal className="flex max-w-[680px] flex-col gap-4">
-              <h2 id="problem-title" className="heading-4 text-ink md:heading-3">
-                Visitor books and WhatsApp proofs leave gaps nobody can audit
-              </h2>
-              <p className="body-3 text-muted">EstateFlow replaces three fragile habits with one record your whole estate can trust.</p>
-            </Reveal>
+            <div className="grid items-center gap-16 lg:grid-cols-[1fr_440px]">
+              <Reveal className="flex max-w-[680px] flex-col gap-6">
+                <h2 id="problem-title" className="heading-4 text-ink md:heading-3">
+                  Visitor books and WhatsApp proofs leave gaps nobody can audit
+                </h2>
+                <p className="body-3 text-muted">EstateFlow replaces three fragile habits with one record your whole estate can trust.</p>
+                <p className="flex items-start gap-2 caption-2 text-muted">
+                  <ShieldCheck size={18} weight="duotone" className="mt-0.5 shrink-0 text-teal-ink" aria-hidden />
+                  <span>Works in any phone browser. Payments are confirmed with Paystack before a receipt is issued.</span>
+                </p>
+              </Reveal>
+              <Reveal delay={80} className="px-4 pb-8 sm:px-12">
+                <HeroVisual />
+              </Reveal>
+            </div>
             <div className="grid gap-6 md:grid-cols-3">
               {PROBLEMS.map((item, index) => (
                 <Reveal key={item.before} delay={index * 80}>
@@ -193,7 +168,7 @@ export default function LandingPage() {
                   <Reveal key={benefit.title} delay={index * 60}>
                     <article className="flex h-full flex-col gap-4 rounded-3xl border border-line bg-surface p-6 transition duration-300 ease-weighted hover:-translate-y-1">
                       <span className="flex size-12 items-center justify-center rounded-2xl bg-navy text-teal" aria-hidden>
-                        <Icon size={24} />
+                        <Icon size={28} weight="duotone" />
                       </span>
                       <h3 className="heading-6 text-ink">{benefit.title}</h3>
                       <p className="body-6 text-muted">{benefit.body}</p>
@@ -232,16 +207,18 @@ export default function LandingPage() {
               {STEPS.map((step, index) => {
                 const Icon = step.icon;
                 return (
-                  <Reveal key={step.title} delay={index * 80}>
-                    <li className="flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-navy-soft p-6">
+                  <li key={step.title}>
+                    <Reveal delay={index * 80} className="h-full">
+                    <div className="flex h-full flex-col gap-4 rounded-3xl border border-white/10 bg-navy-soft p-6">
                       <div className="flex items-center gap-3">
-                        <span className="flex size-10 items-center justify-center rounded-xl bg-teal font-mono title-3 text-navy">{index + 1}</span>
-                        <Icon size={24} className="text-white/70" aria-hidden />
+                        <span className="flex size-10 items-center justify-center rounded-xl bg-teal tabular-nums title-3 text-navy">{index + 1}</span>
+                        <Icon size={28} weight="duotone" className="text-teal" aria-hidden />
                       </div>
                       <h3 className="heading-6">{step.title}</h3>
                       <p className="body-6 text-white/70">{step.body}</p>
-                    </li>
-                  </Reveal>
+                    </div>
+                    </Reveal>
+                  </li>
                 );
               })}
             </ol>
@@ -249,7 +226,7 @@ export default function LandingPage() {
         </section>
 
         {/* Proof */}
-        <section aria-labelledby="proof-title" className="px-4 py-24 md:py-32">
+        <section id="safeguards" aria-labelledby="proof-title" className="scroll-mt-24 px-4 py-24 md:py-32">
           <div className="mx-auto flex max-w-6xl flex-col gap-12">
             <Reveal className="flex max-w-[680px] flex-col gap-4">
               <h2 id="proof-title" className="heading-4 text-ink md:heading-3">
@@ -263,7 +240,7 @@ export default function LandingPage() {
                 return (
                   <Reveal key={item.title} delay={index * 60}>
                     <article className="flex h-full gap-4 rounded-3xl border border-line p-6">
-                      <Icon size={24} className="shrink-0 text-violet" aria-hidden />
+                      <Icon size={28} weight="duotone" className="shrink-0 text-violet" aria-hidden />
                       <div className="flex flex-col gap-2">
                         <h3 className="title-2 text-ink">{item.title}</h3>
                         <p className="body-6 text-muted">{item.body}</p>
@@ -331,7 +308,7 @@ export default function LandingPage() {
                   "Export your records as CSV whenever you want",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-3 body-5 text-ink">
-                    <ShieldCheck size={20} className="text-teal-ink" aria-hidden /> {item}
+                    <ShieldCheck size={20} weight="duotone" className="shrink-0 text-teal-ink" aria-hidden /> {item}
                   </li>
                 ))}
               </ul>

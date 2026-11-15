@@ -1,4 +1,4 @@
-import { Wrench } from "@phosphor-icons/react/dist/ssr";
+import { Wrench } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { NewTicket } from "@/components/resident/new-ticket";

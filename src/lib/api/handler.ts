@@ -50,6 +50,8 @@ type BodyOf<S> = S extends z.ZodType ? z.output<S> : undefined;
 interface RouteOptions<S extends z.ZodType | undefined, M extends AuthMode> {
   auth: M;
   action?: Action | readonly Action[];
+  /** Require App Check on a public route too (when enforcement is on). */
+  appCheck?: boolean;
   body?: S;
   /** Multipart routes parse `request.formData()` themselves. */
   multipart?: boolean;
@@ -152,7 +154,7 @@ export function apiRoute<S extends z.ZodType | undefined = undefined, M extends 
     await connection();
     try {
       assertSameOrigin(request);
-      if (options.auth !== "public") await assertAppCheck(request);
+      if (options.auth !== "public" || options.appCheck) await assertAppCheck(request);
 
       const rawParams = routeContext?.params ? await routeContext.params : {};
       const params = Object.fromEntries(

@@ -1,6 +1,6 @@
 "use client";
 
-import { DownloadSimple, UploadSimple } from "@phosphor-icons/react";
+import { DownloadSimple, UploadSimple } from "@/components/ui/icons";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

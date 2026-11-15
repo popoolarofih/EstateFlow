@@ -11,6 +11,9 @@ import type { Estate } from "@/types/domain";
 import type { ServiceContext } from "./context";
 import { writeInvite, type CreatedInvite } from "./members";
 
+/** No person completes the six field pilot form this fast. */
+export const MIN_HUMAN_FILL_MS = 3000;
+
 export const DEFAULT_SETTINGS: Estate["settings"] = {
   maxActivePassesPerUnit: 30,
   ticketReopenDays: 7,
@@ -112,7 +115,9 @@ export async function recordPilotRequest(
   input: z.output<typeof pilotRequestSchema>,
   meta: { ipHash: string | null },
 ): Promise<void> {
-  if (input.website) return; // Honeypot: silently accept and drop bot submissions.
+  // Bots fill hidden fields and submit instantly. Accept silently so they learn nothing.
+  if (input.website) return;
+  if (input.elapsedMs !== undefined && input.elapsedMs < MIN_HUMAN_FILL_MS) return;
   const db = adminDb();
   const ref = await db.collection(COLLECTIONS.pilotRequests).add({
     name: input.name,

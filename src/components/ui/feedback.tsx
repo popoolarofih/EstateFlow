@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
+import type { IconProps } from "./icons";
 import { cx } from "./cx";
 
 export function Skeleton({ className }: { className?: string }) {
@@ -49,8 +50,9 @@ export function EmptyState({
 }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-line-strong bg-surface px-4 py-10 text-center">
-      <div className="flex size-12 items-center justify-center rounded-xl bg-canvas text-muted" aria-hidden>
-        {icon}
+      <div className="flex size-14 items-center justify-center rounded-2xl bg-violet-soft text-violet" aria-hidden>
+        {/* Empty states use the duotone style as a small illustration. */}
+        {isValidElement(icon) ? cloneElement(icon as ReactElement<IconProps>, { size: 28, weight: "duotone" }) : icon}
       </div>
       <h3 className="title-2 text-ink">{title}</h3>
       <p className="max-w-sm body-6 text-muted">{description}</p>

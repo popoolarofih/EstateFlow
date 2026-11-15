@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "@phosphor-icons/react";
+import { Plus } from "@/components/ui/icons";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Field, Input, Select, Textarea } from "@/components/ui/field";
 import { Notice } from "@/components/ui/feedback";
 import { submitWith } from "@/components/ui/forms";
 import { api, ApiError, errorMessage } from "@/lib/api/client";
+import { compressFormImages } from "@/lib/images/compress";
 import { PRIORITY_LABELS } from "@/lib/maintenance/workflow";
 import { TICKET_CATEGORIES, TICKET_PRIORITIES } from "@/types/domain";
 
@@ -46,7 +47,7 @@ export function NewTicket() {
             setError(null);
             setFieldErrors({});
             try {
-              const { id } = await api<{ id: string }>("/api/maintenance", { formData: form });
+              const { id } = await api<{ id: string }>("/api/maintenance", { formData: await compressFormImages(form, "photos") });
               setOpen(false);
               router.push(`/resident/services/${id}`);
             } catch (caught) {
@@ -84,8 +85,8 @@ export function NewTicket() {
           <Field id="description" label="What is happening?" error={fieldErrors.description?.[0]}>
             <Textarea id="description" name="description" rows={4} maxLength={2000} required />
           </Field>
-          <Field id="photos" label="Photos" optional hint="Up to 4 images, 5 MB each.">
-            <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple className="body-6 file:mr-3 file:min-h-10 file:rounded-lg file:border-0 file:bg-canvas file:px-3 file:py-2 file:button-sm" />
+          <Field id="photos" label="Photos" optional hint="Up to 4 images. Large photos are resized before upload.">
+            <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple className="body-6 file:mr-3 file:min-h-10 file:rounded-lg file:border-0 file:bg-canvas file:px-3 file:py-2 file:button-sm" />
           </Field>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setOpen(false)} disabled={pending}>

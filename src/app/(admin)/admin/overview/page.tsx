@@ -1,4 +1,4 @@
-import { DoorOpen, Wrench } from "@phosphor-icons/react/dist/ssr";
+import { DoorOpen, Wrench } from "@/components/ui/icons";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -57,7 +57,7 @@ async function Overview() {
         <CardHeader title={`Collections for ${data.periodKey}`} description={`${data.periodInvoices} invoices issued this period.`} />
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap items-end justify-between gap-2">
-            <p className="heading-5 font-mono tabular-nums">{formatNaira(data.periodPaidKobo)}</p>
+            <p className="heading-5 tabular-nums">{formatNaira(data.periodPaidKobo)}</p>
             <p className="body-6 text-muted">of {formatNaira(data.periodDueKobo)} billed · {collectionRate}% collected</p>
           </div>
           <div className="h-3 overflow-hidden rounded-full bg-canvas" role="img" aria-label={`${collectionRate} percent collected`}>

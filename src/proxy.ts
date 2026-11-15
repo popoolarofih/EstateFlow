@@ -1,17 +1,47 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+const PROTECTED = ["/resident", "/guard", "/admin", "/platform", "/notifications"];
+const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
+
 /**
- * Optimistic redirect for signed out visitors. This is not authorisation: every page and API
- * route verifies the session cookie and estate membership on the server.
+ * Runs before every page and API request:
+ * 1. Forces HTTPS in production (HSTS in next.config.ts then keeps browsers on HTTPS).
+ * 2. Optimistically sends signed out visitors to sign in. This is not authorisation: every
+ *    page and API route verifies the session cookie and estate membership on the server.
  */
 export function proxy(request: NextRequest) {
-  if (request.cookies.has("__session")) return NextResponse.next();
-  const url = request.nextUrl.clone();
-  url.pathname = "/sign-in";
-  url.search = `?next=${encodeURIComponent(request.nextUrl.pathname)}`;
-  return NextResponse.redirect(url);
+  const forwardedProto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
+  const host = request.nextUrl.hostname;
+  // Vercel already redirects to HTTPS at its edge, and internal partial prerendering resume requests
+  // (`next-resume`) must never be redirected, or pages stay on their loading state.
+  const platformHandlesHttps = process.env.VERCEL === "1";
+  const isResume = request.headers.has("next-resume");
+  if (
+    process.env.NODE_ENV === "production" &&
+    !platformHandlesHttps &&
+    !isResume &&
+    forwardedProto === "http" &&
+    !LOCAL_HOSTS.has(host)
+  ) {
+    const url = request.nextUrl.clone();
+    url.protocol = "https:";
+    url.port = "";
+    // 308 keeps the method and body for API calls.
+    return NextResponse.redirect(url, 308);
+  }
+
+  const path = request.nextUrl.pathname;
+  const isProtected = PROTECTED.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
+  if (isProtected && !request.cookies.has("__session")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/sign-in";
+    url.search = `?next=${encodeURIComponent(path)}`;
+    return NextResponse.redirect(url);
+  }
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/resident/:path*", "/guard/:path*", "/admin/:path*", "/platform/:path*", "/notifications/:path*"],
+  // Everything except build assets and static files.
+  matcher: ["/((?!_next/static|_next/image|.*\\.(?:svg|png|jpg|jpeg|webp|ico|txt|xml|webmanifest|js)$).*)"],
 };

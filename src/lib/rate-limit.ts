@@ -24,6 +24,7 @@ export const RATE_LIMITS = {
   inviteAccept: { name: "invite-accept", limit: 10, windowMs: 10 * 60_000 },
   pilotRequest: { name: "pilot-request", limit: 5, windowMs: 60 * 60_000 },
   upload: { name: "upload", limit: 30, windowMs: 60 * 60_000 },
+  clientError: { name: "client-error", limit: 20, windowMs: 10 * 60_000 },
 } as const satisfies Record<string, RateLimitRule>;
 
 export async function enforceRateLimit(db: Firestore, rule: RateLimitRule, subject: string, now = Date.now()) {

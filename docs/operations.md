@@ -45,6 +45,44 @@ Never put secrets in Firestore, `NEXT_PUBLIC_*` variables or the repository.
 
 ## 4. Deploying
 
+### Vercel checklist
+
+- Build command: leave the default (`npm run build`, which runs `next build --webpack`; see below).
+- Set these variables for Production (and Preview if you use it). Copy names from `.env.example`
+  but **never** the emulator lines: do not set `FIRESTORE_EMULATOR_HOST`,
+  `FIREBASE_AUTH_EMULATOR_HOST` or `FIREBASE_STORAGE_EMULATOR_HOST`, and set
+  `NEXT_PUBLIC_USE_FIREBASE_EMULATORS=false`.
+  - `NEXT_PUBLIC_FIREBASE_API_KEY`, `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`, `NEXT_PUBLIC_FIREBASE_PROJECT_ID`,
+    `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`, `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`,
+    `NEXT_PUBLIC_FIREBASE_APP_ID` (Firebase console > Project settings > Your apps > Web app).
+  - `FIREBASE_PROJECT_ID`, `FIREBASE_STORAGE_BUCKET`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`
+    from a service account key (Vercel has no Google Application Default Credentials). Paste the
+    private key with its `\n` escapes on one line.
+  - `PASS_CODE_HMAC_SECRET` (32+ random characters), `PAYSTACK_SECRET_KEY` when payments go live,
+    and `APP_BASE_URL` once a custom domain is connected.
+  - `PLATFORM_ADMIN_UIDS`: your Firebase Auth user UID, to reach `/platform` and create estates.
+- Check `https://<domain>/api/health` after each deploy: it reports module load errors and which
+  settings are missing (yes/no only).
+- In Firebase Authentication > Settings > Authorized domains, add the Vercel domain.
+- Redeploy after changing variables (`NEXT_PUBLIC_*` values are baked in at build time).
+
+### Why jwks-rsa is pinned
+
+Vercel's Node runtime does not allow `require()` of ES modules. `firebase-admin` depends on
+`jwks-rsa` 4, which requires the ESM only `jose` 6, so every route that imported
+`firebase-admin/auth` crashed with `ERR_REQUIRE_ESM`. An npm override pins `jwks-rsa` 3.2.2
+(same API, CommonJS `jose` 4). `tests/unit/runtime-compat.test.ts` guards this.
+
+### Why production builds use webpack
+
+Turbopack (the Next.js 16 default) loads server external packages such as `firebase-admin`
+through hashed symlinks in `.next/node_modules`. Those links were not present in the deployed
+Vercel functions, so every server rendered page and API route crashed with an empty 500 (sign in
+stayed on its loading skeleton). `next build --webpack` references externals with plain
+`require()` calls that Vercel's file tracing handles. Development (`next dev`) still uses Turbopack;
+Tailwind runs through PostCSS for both.
+
+
 **Web app** (Vercel or Firebase App Hosting): build command `npm run build`, Node 22. Set every
 variable from section 3 plus the `NEXT_PUBLIC_FIREBASE_*` values and `APP_BASE_URL`. Ensure the
 `FIRESTORE_EMULATOR_HOST` family of variables is **not** set in deployed environments.

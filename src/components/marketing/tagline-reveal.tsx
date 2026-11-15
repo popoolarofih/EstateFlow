@@ -21,18 +21,21 @@ export function TaglineReveal({ lines }: { lines: string[] }) {
       (entries) => {
         for (const entry of entries) {
           const word = entry.target as HTMLSpanElement;
-          // Active once the word is above the trigger line, including after it scrolls off the top.
-          word.dataset.active = String(entry.isIntersecting || entry.boundingClientRect.top < 0);
+          // The root extends far above the viewport, so "intersecting" means "above the trigger line",
+          // including words that a jump (anchor link, Home key) carried past without crossing the screen.
+          word.dataset.active = String(entry.isIntersecting);
         }
       },
-      { rootMargin: "0px 0px -40% 0px", threshold: 0 },
+      { rootMargin: "100000px 0px -40% 0px", threshold: 0 },
     );
     words.forEach((word) => observer.observe(word));
     return () => observer.disconnect();
   }, []);
 
   return (
-    <p ref={ref} className="max-w-[680px] heading-4 text-ink md:heading-2" aria-label={lines.join(" ")}>
+    <p ref={ref} className="max-w-[680px] heading-4 text-ink md:heading-2">
+      {/* Screen readers get the sentence once; the animated words are decorative. */}
+      <span className="sr-only">{lines.join(" ")}</span>
       {lines.map((line, lineIndex) => (
         <span key={lineIndex} className="block" aria-hidden>
           {line.split(" ").map((word, wordIndex) => (

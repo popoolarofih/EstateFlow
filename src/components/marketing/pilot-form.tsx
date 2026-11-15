@@ -1,13 +1,19 @@
 "use client";
 
-import { CheckCircle } from "@phosphor-icons/react";
+import { CheckCircle } from "@/components/ui/icons";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Field, Input, Textarea } from "@/components/ui/field";
 import { Notice } from "@/components/ui/feedback";
 import { submitWith, text } from "@/components/ui/forms";
+import { track } from "@/lib/analytics/track";
 import { api, ApiError, errorMessage } from "@/lib/api/client";
 import { normalizeNigerianPhone } from "@/lib/validation/common";
+
+/** Time trap input, read at submit time (outside render). */
+function millisecondsSincePageLoad(): number {
+  return Math.round(performance.now());
+}
 
 type Errors = Partial<Record<"name" | "email" | "phone" | "estateName" | "city" | "units", string>>;
 
@@ -61,9 +67,14 @@ export function PilotForm() {
               units: Number(text(form, "units")),
               message: text(form, "message"),
               website: text(form, "website"),
+              // Time trap: milliseconds since the page loaded; the server drops instant submissions.
+              elapsedMs: millisecondsSincePageLoad(),
             },
           });
           setSentTo(text(form, "email"));
+          // Conversion event with no personal data, only a size band.
+          const units = Number(text(form, "units"));
+          track("pilot_request_submitted", { size: units < 100 ? "under_100" : units < 300 ? "100_299" : "300_plus" });
         } catch (caught) {
           setError(errorMessage(caught));
           if (caught instanceof ApiError) {

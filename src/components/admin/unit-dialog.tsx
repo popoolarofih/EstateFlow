@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilSimple, Plus } from "@phosphor-icons/react";
+import { PencilSimple, Plus } from "@/components/ui/icons";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";

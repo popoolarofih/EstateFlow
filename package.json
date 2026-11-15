@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
@@ -17,11 +17,13 @@
     "emulators:fresh": "firebase emulators:start --project demo-estateflow",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "grant-platform-admin": "tsx --env-file=.env.local scripts/grant-platform-admin.ts",
-    "functions:build": "npm --prefix functions run build"
+    "functions:build": "npm --prefix functions run build",
+    "check:secrets": "node --env-file-if-exists=.env.local scripts/check-client-secrets.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.6",
-    "@phosphor-icons/react": "^2.1.10",
+    "@solar-icons/react": "^2.6.0",
+    "@vercel/analytics": "^2.0.1",
     "date-fns": "^4.4.0",
     "firebase": "^12.19.0",
     "firebase-admin": "^14.5.1",
@@ -37,9 +39,10 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@firebase/rules-unit-testing": "^5.0.2",
     "@playwright/test": "^1.65.1",
-    "@tailwindcss/turbopack": "4.3.3",
+    "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/react": "^16.3.3",
     "@types/node": "^22.20.5",
@@ -58,10 +61,11 @@
     "vitest": "^5.1.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": "22.x"
   },
   "overrides": {
     "@firebase/app": "0.16.6",
-    "@firebase/app-compat": "0.5.22"
+    "@firebase/app-compat": "0.5.22",
+    "jwks-rsa": "3.2.2"
   }
 }

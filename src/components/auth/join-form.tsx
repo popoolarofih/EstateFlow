@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
 import { Notice } from "@/components/ui/feedback";
 import { submitWith, text } from "@/components/ui/forms";
+import { useHydrated } from "@/components/ui/use-hydrated";
 import { api, errorMessage } from "@/lib/api/client";
 import { authErrorMessage, establishSession } from "@/lib/auth/client-session";
 import { clientAuth } from "@/lib/firebase/client";
@@ -14,6 +15,7 @@ import { clientAuth } from "@/lib/firebase/client";
 /** Create an account (or sign in) and accept the invitation in one flow. */
 export function JoinForm({ token, displayName, signedIn }: { token: string; displayName: string; signedIn: boolean }) {
   const router = useRouter();
+  const hydrated = useHydrated();
   const [mode, setMode] = useState<"create" | "signin">("create");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,6 +50,7 @@ export function JoinForm({ token, displayName, signedIn }: { token: string; disp
 
   return (
     <form
+      method="post"
       noValidate
       className="flex flex-col gap-4"
       onSubmit={submitWith((form) => {
@@ -81,7 +84,7 @@ export function JoinForm({ token, displayName, signedIn }: { token: string; disp
       <Field id="password" label={mode === "create" ? "Choose a password" : "Password"} hint={mode === "create" ? "At least 8 characters." : undefined}>
         <Input id="password" name="password" type="password" autoComplete={mode === "create" ? "new-password" : "current-password"} required />
       </Field>
-      <Button type="submit" pending={pending} pendingLabel="Setting up your account…">
+      <Button type="submit" disabled={!hydrated} pending={pending} pendingLabel="Setting up your account…">
         {mode === "create" ? "Create account and join" : "Sign in and join"}
       </Button>
       <button

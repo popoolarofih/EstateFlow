@@ -1,6 +1,6 @@
 "use client";
 
-import { Camera, Copy, Plus, ShareNetwork, WhatsappLogo } from "@phosphor-icons/react";
+import { Camera, Copy, Plus, ShareNetwork, WhatsappLogo } from "@/components/ui/icons";
 import QRCode from "qrcode";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -10,6 +10,7 @@ import { Field, Input, Select } from "@/components/ui/field";
 import { Notice } from "@/components/ui/feedback";
 import { submitWith, text } from "@/components/ui/forms";
 import { api, errorMessage } from "@/lib/api/client";
+import { compressImage } from "@/lib/images/compress";
 import { PASS_TYPE_LABELS, WEEKDAY_LABELS } from "@/lib/labels";
 import { formatDateTime } from "@/lib/time";
 import { PASS_TYPES, type Gate, type PassType } from "@/types/domain";
@@ -248,7 +249,7 @@ function IssuedPassDialog({ pass, estateName, timezone, onClose }: { pass: Issue
     if (!file) return;
     setPhotoState({ pending: true, message: null, tone: "success" });
     const form = new FormData();
-    form.append("photo", file);
+    form.append("photo", await compressImage(file, { maxDimension: 800 }));
     try {
       await api(`/api/passes/${pass.passId}/photo`, { formData: form });
       setPhotoState({ pending: false, message: "Photo added. Gate security will see it when verifying.", tone: "success" });
@@ -294,11 +295,11 @@ function IssuedPassDialog({ pass, estateName, timezone, onClose }: { pass: Issue
       {pass.passType === "staff" && (
         <div className="flex flex-col gap-2 rounded-2xl border border-line p-4">
           <p className="title-4 text-ink">Add a photo of {pass.guestName}</p>
-          <p className="caption-2 text-muted">Optional. Helps gate security confirm the right person. JPEG, PNG or WebP up to 5 MB.</p>
+          <p className="caption-2 text-muted">Optional. Helps gate security confirm the right person. JPEG, PNG or WebP. Large photos are resized automatically.</p>
           <label className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-xl border border-line-strong px-3 py-2 button-md text-ink hover:bg-canvas">
             <Camera size={20} aria-hidden />
             {photoState.pending ? "Uploading…" : "Choose photo"}
-            <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(event) => uploadPhoto(event.target.files?.[0])} disabled={photoState.pending} />
+            <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" className="sr-only" onChange={(event) => uploadPhoto(event.target.files?.[0])} disabled={photoState.pending} />
           </label>
           {photoState.message && <Notice tone={photoState.tone}>{photoState.message}</Notice>}
         </div>
