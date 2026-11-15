@@ -15,6 +15,7 @@ import { cx } from "@/components/ui/cx";
 import { describedBy, Field, Input } from "@/components/ui/field";
 import { Notice } from "@/components/ui/feedback";
 import { submitWith } from "@/components/ui/forms";
+import { useHydrated } from "@/components/ui/use-hydrated";
 import { authErrorMessage, establishSession } from "@/lib/auth/client-session";
 import { clientAuth } from "@/lib/firebase/client";
 import { normalizeNigerianPhone } from "@/lib/validation/common";
@@ -23,6 +24,8 @@ type Mode = "email" | "phone" | "reset";
 
 export function SignInForm() {
   const router = useRouter();
+  // Until React hydrates, submitting would be a plain HTML form post; never allow that.
+  const hydrated = useHydrated();
   const [mode, setMode] = useState<Mode>("email");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -131,14 +134,14 @@ export function SignInForm() {
       {info && <Notice tone="success">{info}</Notice>}
 
       {mode === "email" && (
-        <form onSubmit={submitWith(onEmailSubmit)} className="flex flex-col gap-4" noValidate>
+        <form method="post" onSubmit={submitWith(onEmailSubmit)} className="flex flex-col gap-4" noValidate>
           <Field id="email" label="Email">
             <Input id="email" name="email" type="email" autoComplete="email" inputMode="email" required />
           </Field>
           <Field id="password" label="Password">
             <Input id="password" name="password" type="password" autoComplete="current-password" required />
           </Field>
-          <Button type="submit" pending={pending} pendingLabel="Signing in…">
+          <Button type="submit" disabled={!hydrated} pending={pending} pendingLabel="Signing in…">
             Sign in
           </Button>
           <button
@@ -157,6 +160,7 @@ export function SignInForm() {
 
       {mode === "phone" && (
         <form
+          method="post"
           onSubmit={(event) => {
             event.preventDefault();
             onPhoneSubmit(new FormData(event.currentTarget));
@@ -182,7 +186,7 @@ export function SignInForm() {
               <Input id="otp" name="otp" inputMode="numeric" autoComplete="one-time-code" maxLength={6} required />
             </Field>
           )}
-          <Button type="submit" pending={pending} pendingLabel={confirmation ? "Verifying…" : "Sending code…"}>
+          <Button type="submit" disabled={!hydrated} pending={pending} pendingLabel={confirmation ? "Verifying…" : "Sending code…"}>
             {confirmation ? "Verify and sign in" : "Send code"}
           </Button>
           <div ref={recaptchaRef} />
@@ -190,11 +194,11 @@ export function SignInForm() {
       )}
 
       {mode === "reset" && (
-        <form onSubmit={submitWith(onResetSubmit)} className="flex flex-col gap-4" noValidate>
+        <form method="post" onSubmit={submitWith(onResetSubmit)} className="flex flex-col gap-4" noValidate>
           <Field id="reset-email" label="Email" hint="We will send a link to choose a new password.">
             <Input id="reset-email" name="email" type="email" autoComplete="email" required />
           </Field>
-          <Button type="submit" pending={pending} pendingLabel="Sending link…">
+          <Button type="submit" disabled={!hydrated} pending={pending} pendingLabel="Sending link…">
             Send reset link
           </Button>
           <button
