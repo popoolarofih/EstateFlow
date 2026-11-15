@@ -395,6 +395,28 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "periodKey",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "amountDueKobo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "amountPaidKobo",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "invoices",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estateId",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "status",
           "order": "ASCENDING"
         },

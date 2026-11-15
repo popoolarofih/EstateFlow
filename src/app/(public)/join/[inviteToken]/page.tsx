@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { JoinForm } from "@/components/auth/join-form";
@@ -11,6 +12,8 @@ export const metadata: Metadata = { title: "Join your estate", robots: { index: 
 
 async function Invitation({ params }: { params: Promise<{ inviteToken: string }> }) {
   const { inviteToken } = await params;
+  // Invite state is request time; opt out of prerendering before touching Firestore.
+  await connection();
   const [preview, user] = await Promise.all([previewInvite(inviteToken), getSessionUser()]);
   if (!preview || preview.status === "revoked") {
     return <Notice tone="error" title="This invitation link is not valid">Ask your estate manager to send a new invitation.</Notice>;
