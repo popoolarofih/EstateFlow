@@ -15,14 +15,6 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   poweredByHeader: false,
   serverExternalPackages: ["firebase-admin"],
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

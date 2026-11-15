@@ -12,7 +12,17 @@ const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 export function proxy(request: NextRequest) {
   const forwardedProto = request.headers.get("x-forwarded-proto")?.split(",")[0]?.trim();
   const host = request.nextUrl.hostname;
-  if (process.env.NODE_ENV === "production" && forwardedProto === "http" && !LOCAL_HOSTS.has(host)) {
+  // Vercel already redirects to HTTPS at its edge, and internal partial prerendering resume requests
+  // (`next-resume`) must never be redirected, or pages stay on their loading state.
+  const platformHandlesHttps = process.env.VERCEL === "1";
+  const isResume = request.headers.has("next-resume");
+  if (
+    process.env.NODE_ENV === "production" &&
+    !platformHandlesHttps &&
+    !isResume &&
+    forwardedProto === "http" &&
+    !LOCAL_HOSTS.has(host)
+  ) {
     const url = request.nextUrl.clone();
     url.protocol = "https:";
     url.port = "";

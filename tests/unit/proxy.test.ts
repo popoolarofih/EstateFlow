@@ -17,6 +17,13 @@ describe("proxy", () => {
     expect(response.headers.get("location")).toBe("https://estateflow.ng/resident?x=1");
   });
 
+  it("never redirects partial prerendering resume requests, and leaves HTTPS to Vercel there", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    expect(proxy(request("http://estateflow.ng/sign-in", { "x-forwarded-proto": "http", "next-resume": "1" })).headers.get("location")).toBeNull();
+    vi.stubEnv("VERCEL", "1");
+    expect(proxy(request("http://estateflow.ng/", { "x-forwarded-proto": "http" })).headers.get("location")).toBeNull();
+  });
+
   it("does not redirect HTTPS, local hosts or development", () => {
     vi.stubEnv("NODE_ENV", "production");
     expect(proxy(request("https://estateflow.ng/", { "x-forwarded-proto": "https" })).headers.get("location")).toBeNull();

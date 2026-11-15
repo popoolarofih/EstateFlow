@@ -8,7 +8,7 @@ import {
   signInWithPhoneNumber,
   type ConfirmationResult,
 } from "firebase/auth";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cx } from "@/components/ui/cx";
@@ -23,7 +23,6 @@ type Mode = "email" | "phone" | "reset";
 
 export function SignInForm() {
   const router = useRouter();
-  const next = useSearchParams().get("next");
   const [mode, setMode] = useState<Mode>("email");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +32,8 @@ export function SignInForm() {
   const verifierRef = useRef<RecaptchaVerifier | null>(null);
 
   async function finish(user: Parameters<typeof establishSession>[0]) {
+    // Read at submit time (not useSearchParams) so the form can be part of the static shell.
+    const next = new URLSearchParams(window.location.search).get("next");
     const redirectTo = await establishSession(user, next);
     router.replace(redirectTo);
     router.refresh();

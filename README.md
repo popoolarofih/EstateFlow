@@ -48,7 +48,7 @@ webhook at `/api/webhooks/paystack` (for example through a tunnel).
 
 | Script | What it does |
 |---|---|
-| `npm run dev` / `build` / `start` | Next.js |
+| `npm run dev` / `build` / `start` | Next.js (production builds use webpack; see `docs/operations.md`) |
 | `npm run typecheck`, `npm run lint` | TypeScript and ESLint |
 | `npm test` | Unit tests (domain logic, no emulator) |
 | `npm run test:rules` | Firestore and Storage Security Rules tests, two estates, on emulators |

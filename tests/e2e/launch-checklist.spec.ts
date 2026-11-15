@@ -136,7 +136,9 @@ test("no cookies are set on the public site without consent", async ({ page, con
   await page.goto("/");
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.waitForTimeout(500);
-  expect((await context.cookies()).map((cookie) => cookie.name)).toEqual([]);
+  // First party cookies only. (The hero photo CDN may set its own bot protection cookie.)
+  const ours = (await context.cookies()).filter((cookie) => cookie.domain.replace(/^\./, "") === new URL(page.url()).hostname);
+  expect(ours.map((cookie) => cookie.name)).toEqual([]);
 });
 
 test("landing page meets the page speed budget", async ({ page }) => {
